@@ -4,6 +4,7 @@ Created on Wed Dec 23 22:03:30 2015
 @author: k.sozykin
 based on : http://lenguyenthedat.com/minimal-data-science-3-mnist-neuralnet/
            https://github.com/lenguyenthedat/kaggle-for-fun/blob/master/digit-recognizer/digit-recognizer.py
+           https://www.kaggle.com/cyberzhg/digit-recognizer/sklearn-pca-svm/files
 """
 from __future__ import print_function
 import pandas as pd
@@ -16,23 +17,25 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler,RobustScaler
-from sknn import mlp
+
+# params
+sample = 0
+scale = 0
+is_win = os_name == 'nt'
+pd.options.mode.chained_assignment = None
+is_pca = 0
+target = 'Label' if sample else 'label'
+
+if not is_win:
+    from sknn import mlp
+    
 from datetime import datetime
 
 # disable warnings 
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-
 def main():
-    ok = 'ok'
-    # params
-    pd.options.mode.chained_assignment = None
-    sample = 1
-    scale = 0
-    is_win = os_name == 'nt'
-    is_pca = 0
-    target = 'Label' if sample else 'label'
     # reading data
     base_path = ''
     if is_win:
@@ -71,7 +74,7 @@ def main():
     # Create array of classifiers
     classifiers = []
     classifiers.append(RandomForestClassifier(n_estimators=256, max_depth=64))
-    classifiers.append(SVC(kernel ='rbf',C = 2))
+#    classifiers.append(SVC(kernel ='rbf',C = 2))
 #    classifiers.append(mlp.Classifier(
 #            layers=[
 #                mlp.Layer('Rectifier', units=100),
